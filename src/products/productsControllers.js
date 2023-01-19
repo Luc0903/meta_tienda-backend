@@ -4,7 +4,7 @@ export function getAllProducts(req, res){
 
 
 export function getSingleProduct(req, res){
-    res.send('You are in get single product')
+    res.send('You are about to get a single product')
 }
 
 export function createProduct(req, res){
