@@ -9,4 +9,16 @@ cloudinary.congif({
 
 })
 
+export const uploadImgCloduinary = async filePath => {
+    return await cloudinary.v2.uploader.upload(filePath, {
+        folder: 'metatienda'
+    })
+}
+
+export const deleteImgCloudinary = async filePath => {
+    return await cloudinary.v2.uploader.destroy(filePath, {
+        folder: 'metatienda'
+    })
+}
+
 export default cloudinary;

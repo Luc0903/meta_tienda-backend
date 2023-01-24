@@ -1,10 +1,12 @@
 import Product from "./productsModel"
 import { StatusCodes } from 'http-status-codes';
 
+
+// STILL MISSING THE CLOUDINARY ADDITION
+
 export async function getAllProducts(req, res){
     
     const products = await Product.find({})
-
     if ( !products ) res.send('Todavía no hay productos creados')
 
     res.status(StatusCodes.OK).json({ products })
