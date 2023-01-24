@@ -1,8 +1,6 @@
 import Product from "./productsModel"
 import { StatusCodes } from 'http-status-codes';
-
-
-// STILL MISSING THE CLOUDINARY ADDITION
+import { uploadImgCloduinary, deleteImgCloudinary } from '../utils/cloudinary'
 
 export async function getAllProducts(req, res){
     
@@ -25,15 +23,36 @@ export async function getSingleProduct(req, res){
 
 }
 
-export function createProduct(req, res){
-    res.send('You are in create product')
+export async function createProduct(req, res){
+    const { 
+        body: { name, description, price, stock }, 
+        files: { image } 
+     } = req
+
+    if(!name || !description || !price || !stock ||  !image) res.send( 'Todos los campos deben ser completados' )
+
+    const result = await uploadImgCloduinary(image.tempFilePath) 
+
+    const createdProduct = await Product.create({
+        name, 
+        description,
+        price,
+        stock, 
+        image: {
+            public_id: result.public_id,
+            url: result.secure_url
+        }
+    })
+
+    res.status(StatusCodes.OK).json({ createdProduct })
+
 }
 
 export async function editProduct(req, res){
     const { 
         params: {id: product_id}, 
         body: { name, description, price, stock }, 
-        files: { image } 
+        // files: { image } 
     } = req
 
     if( !name || !description || !price || !stock ) res.send( 'Todos los campos deben ser completados' )
@@ -43,10 +62,10 @@ export async function editProduct(req, res){
         description,
         price,
         stock,
-        image: {
-            public_id: result.public_id,
-            url: result.secure_url
-        }
+        // image: {
+        //     public_id: result.public_id,
+        //     url: result.secure_url
+        // }
     })
 
     res.status(StatusCodes.OK).json({ updatedProduct })
