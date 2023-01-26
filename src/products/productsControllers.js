@@ -25,11 +25,13 @@ export async function getSingleProduct(req, res){
 
 export async function createProduct(req, res){
     const { 
-        body: { name, description, price, stock }, 
+        body: { name, description, price, stock, category }, 
         files: { image } 
      } = req
 
-    if(!name || !description || !price || !stock ||  !image) res.send( 'Todos los campos deben ser completados' )
+    if(!name || !description || !price || !stock ||  !image || !category){
+        res.send( 'Todos los campos deben ser completados' )
+    } 
 
     const result = await uploadImgCloduinary(image.tempFilePath) 
 
@@ -38,6 +40,7 @@ export async function createProduct(req, res){
         description,
         price,
         stock, 
+        category,
         image: {
             public_id: result.public_id,
             url: result.secure_url
@@ -51,17 +54,20 @@ export async function createProduct(req, res){
 export async function editProduct(req, res){
     const { 
         params: {id: product_id}, 
-        body: { name, description, price, stock }, 
+        body: { name, description, price, stock, category }, 
         // files: { image } 
     } = req
 
-    if( !name || !description || !price || !stock ) res.send( 'Todos los campos deben ser completados' )
+    if(!name || !description || !price || !stock ||  !image || !category){
+        res.send( 'Todos los campos deben ser completados' )
+    } 
 
     const updatedProduct = await Product.findByIdAndUpdate(product_id, {
         name,
         description,
         price,
         stock,
+        category,
         // image: {
         //     public_id: result.public_id,
         //     url: result.secure_url
