@@ -1,9 +1,5 @@
 import Product from "./productsModel.js";
 import { StatusCodes } from "http-status-codes";
-import {
-  uploadImgCloduinary,
-  deleteImgCloudinary,
-} from "../utils/cloudinary.js";
 
 export async function getAllProducts(req, res) {
   try {
@@ -28,21 +24,10 @@ export async function getSingleProduct(req, res) {
 export async function createProduct(req, res) {
   // const {
   //   body: { name, description, price, stock, category },
-  //   files: { image },
   // } = req;
-
-  const { body, files } = req;
-  console.log(files.productImage);
-  console.log(body.clotheInfo.name);
-
-  return res.status(200).json({ message: "ok" });
-
-  // if (Object.values(body).includes("") || !files.image) {
+  // if (Object.values(body).includes("")) {
   //   res.send("Todos los campos deben ser completados");
   // }
-
-  // const result = await uploadImgCloduinary(image.tempFilePath);
-
   // const createdProduct = await Product.create({
   //   name,
   //   description,
@@ -54,7 +39,6 @@ export async function createProduct(req, res) {
   //     url: result.secure_url,
   //   },
   // });
-
   // res.status(StatusCodes.OK).json({ createdProduct });
 }
 
