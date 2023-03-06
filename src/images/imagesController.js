@@ -2,7 +2,7 @@ import { uploadImgCloduinary } from "../utils/cloudinary.js";
 
 export async function handleImageData(req, res) {
   const { clotheImage } = req.files;
-  console.log(clotheImage);
+  // console.log(clotheImage);
   try {
     const result = await uploadImgCloduinary(clotheImage.tempFilePath);
     return res.json({ result });

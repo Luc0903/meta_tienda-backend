@@ -8,15 +8,10 @@ const productSchema = mongoose.Schema({
     maxLength: 30,
     trim: true,
   },
-  image: {
-    public_id: {
-      type: String,
-      required: true,
-    },
-    url: {
-      type: String,
-      required: true,
-    },
+  url: {
+    type: String,
+    required: [true, "Please provide an url"],
+    trim: true,
   },
   description: {
     type: String,

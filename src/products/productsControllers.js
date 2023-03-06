@@ -7,7 +7,7 @@ export async function getAllProducts(req, res) {
     if (!products || !products.length) return res.json({ response: "no data" });
     return res.status(StatusCodes.OK).json({ products });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error });
   }
 }
 
@@ -22,24 +22,20 @@ export async function getSingleProduct(req, res) {
 }
 
 export async function createProduct(req, res) {
-  // const {
-  //   body: { name, description, price, stock, category },
-  // } = req;
-  // if (Object.values(body).includes("")) {
-  //   res.send("Todos los campos deben ser completados");
-  // }
-  // const createdProduct = await Product.create({
-  //   name,
-  //   description,
-  //   price,
-  //   stock,
-  //   category,
-  //   image: {
-  //     public_id: result.public_id,
-  //     url: result.secure_url,
-  //   },
-  // });
-  // res.status(StatusCodes.OK).json({ createdProduct });
+  const { name, description, price, stock, category, url } = req.body;
+  if (Object.values(req.body).includes("")) {
+    res.send("Todos los campos deben ser completados");
+  }
+
+  const createdProduct = await Product.create({
+    name,
+    url,
+    description,
+    price: Number(price),
+    stock: Number(stock),
+    category,
+  });
+  res.status(StatusCodes.OK).json({ createdProduct });
 }
 
 export async function editProduct(req, res) {
