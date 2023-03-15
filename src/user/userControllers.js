@@ -1,28 +1,30 @@
-import User from './userModel.js'
-import { StatusCodes } from 'http-status-codes';
+import User from "./userModel.js";
+import { StatusCodes } from "http-status-codes";
 
-export async function Register(req, res){
+export async function Register(req, res) {
+  if (Object.values(req.body).includes(""))
+    return res.json({ message: "Todos los campos deben ser completados" });
 
-    const user = await User.create({...req.body})
+  const user = await User.create({ ...req.body });
 
-    const token = user.createJWT()
+  const token = user.createJWT();
 
-    res.status(StatusCodes.CREATED).send({user, token})
+  return res.status(StatusCodes.CREATED).send({ user, token });
 }
 
-export async function Login(req, res){
+export async function Login(req, res) {
+  if (Object.values(req.body).includes(""))
+    return res.json({ message: "Todos los campos deben ser completados" });
 
-    const {email, password} = req.body;
-    if( !email || !password ) res.send('No email or password provided')
+  const { email, password } = req.body;
 
-    const user = await User.findOne({ email }) 
-    if ( !user ) res.send('Invalid Credentials')
+  const user = await User.findOne({ email });
+  if (!user) res.send("Invalid Credentials");
 
-    const isPasswordCorrect = await user.comparePasswords(password)
-    if ( !isPasswordCorrect ) res.send('Invalid Credentials')
+  const isPasswordCorrect = await user.comparePasswords(password);
+  if (!isPasswordCorrect) res.send("Invalid Credentials");
 
-    const token = user.createJWT()
+  const token = user.createJWT();
 
-    res.status(StatusCodes.OK).json({ user: { name: user.name }, token })
-
+  return res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
 }
