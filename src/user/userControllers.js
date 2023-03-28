@@ -7,9 +7,11 @@ export async function Register(req, res) {
 
   const user = await User.create({ ...req.body });
 
+  const { isAdmin, name } = user;
+
   const token = user.createJWT();
 
-  return res.status(StatusCodes.CREATED).send({ user, token });
+  return res.status(StatusCodes.CREATED).json({ isAdmin, name, token });
 }
 
 export async function Login(req, res) {
